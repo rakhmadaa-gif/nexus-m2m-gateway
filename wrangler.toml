@@ -1,0 +1,7 @@
+name = "nexus-m2m-gateway"
+main = "src/worker.js"
+compatibility_date = "2024-12-01"
+
+# Deploy: CLOUDFLARE_API_TOKEN=<token> npx wrangler deploy
+# Token scopes needed: Account > Cloudflare Workers Scripts > Edit,
+# plus User > User Details > Read (wrangler needs it to resolve account).
