@@ -301,7 +301,16 @@ export default {
     // Method, headers (incl. x-client-id and x402 payment headers), body,
     // and query string are preserved; the response is passed through
     // unmodified (including 402 payment-required headers).
-    const upstream = SUPABASE_FUNCTION_URL + url.pathname + url.search;
+    //
+    // Path normalization: callers may use the x402-conventional prefix
+    // /v1/<resource> (as listed on x402-list), while the Supabase function
+    // mounts its routes at the root (e.g. /x402/fitness, /evm-sentinel/...).
+    // Strip a leading /v1 segment so both forms reach the same route.
+    let proxyPath = url.pathname;
+    if (proxyPath === "/v1" || proxyPath.startsWith("/v1/")) {
+      proxyPath = proxyPath.slice(3) || "/";
+    }
+    const upstream = SUPABASE_FUNCTION_URL + proxyPath + url.search;
     const proxyHeaders = new Headers(request.headers);
     proxyHeaders.delete("host");
     proxyHeaders.delete("cf-connecting-ip");
