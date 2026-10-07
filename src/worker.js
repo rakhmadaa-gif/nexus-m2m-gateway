@@ -295,6 +295,15 @@ export default {
       if (path === "/sitemap.xml")
         return textResponse(SITEMAP_XML, "application/xml; charset=utf-8");
       if (path === "/terms" || path === "/terms.html") return htmlResponse(TERMS);
+      // x402-list ownership proof (one-time domain verification for the
+      // new worker-domain listing). Plain text, no auth.
+      if (path === "/.well-known/x402list.txt")
+        return textResponse(
+          "nexus-m2m-gateway.rakhmadaa.workers.dev\n" +
+            "owner: rakhmad aulad alie <rakhmadaa@gmail.com>\n" +
+            "service: Nexus Gateway (M2M legal-code + EVM Sentinel)\n" +
+            "supersedes: https://xibzsthfrbomefnvbicb.supabase.co/functions/v1/hello-world\n",
+        );
     }
 
     // Everything else: transparent proxy to the Supabase Edge Function.
