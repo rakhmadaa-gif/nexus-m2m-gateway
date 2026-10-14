@@ -42,7 +42,11 @@ ${bodyHtml}
 const HEADER = `<header><h1>Nexus Gateway</h1>
 <p>EVM Sentinel + M2M legal-code gateway for Web3. Solidity security scans
 for AI agents, bilingual (EN/ID) legal-code contracts, structured data
-payloads. Payments in USDC on Polygon PoS via the x402 protocol (HTTP 402).</p>
+payloads, and deterministic fitness attestation for repos, dependency
+lockfiles, and packages — every attestation EIP-712 signed by on-chain agent
+identity ERC-8004 #636, Merkle-anchored daily on Polygon, and independently
+verifiable via free public audit endpoints. Payments in USDC on Polygon PoS
+via the x402 protocol (HTTP 402).</p>
 <p><a href="https://rakhmadaa-gif.github.io/nexus-core-gateway/">Human-friendly site</a> ·
 <a href="/llms.txt">Agent doc (llms.txt)</a> ·
 <a href="/openapi.json">OpenAPI 3.1</a> ·
@@ -51,15 +55,24 @@ payloads. Payments in USDC on Polygon PoS via the x402 protocol (HTTP 402).</p>
 
 const HOMEPAGE = htmlPage(
   "Nexus Gateway — EVM Sentinel & M2M Legal-Code Gateway",
-  "Solidity security scans (honeypot check, drainer detection, 9+2 breach scenarios), bilingual EN/ID legal-code contracts, and structured data payloads for AI agents. x402 payments in USDC on Polygon PoS.",
+  "Solidity security scans (honeypot check, drainer detection, 13+2 breach scenarios), deterministic signed fitness attestation for repos, dependency lockfiles and packages (GHSA/CVE, SPDX license, SBOM, verifiable proof), bilingual EN/ID legal-code contracts, and structured data payloads for AI agents. x402 payments in USDC on Polygon PoS.",
   `${HEADER}
 <main>
 <h2>Security scans (EVM Sentinel)</h2>
 <ul>
 <li><b>POST /evm-sentinel/v1/scan-quick</b> — $0.05 USDC. Fast honeypot / access-control scan. Output: risk_score, breach_scenarios, gas_ratio, action (ALLOW|BLOCK).</li>
-<li><b>POST /evm-sentinel/v1/scan-deep</b> — $0.50 USDC. Full breach analysis: BS-001..BS-009 + Permit2 wallet-drainer detection (BS-010) + arbitrage-execution manipulation (BS-011). 1h result cache.</li>
+<li><b>POST /evm-sentinel/v1/scan-deep</b> — $0.50 USDC. Full breach analysis: 13 core scenarios (BS-001..BS-009 + BS-012..BS-015) + Permit2 wallet-drainer detection (BS-010) + arbitrage-execution manipulation (BS-011). 1h result cache.</li>
 </ul>
 <p>Read-only static scan — no wallet approval required.</p>
+
+<h2>Fitness attestation (deterministic, signed, verifiable)</h2>
+<ul>
+<li><b>POST /x402/fitness</b> — $0.05 USDC. Fact-only fitness report for repos, dependency lockfiles, and packages: GHSA/CVE exposure, SPDX license detection, commit freshness, CycloneDX SBOM, deterministic 0-100 score.</li>
+<li><b>POST /x402/fitness/peer-check</b> — $0.05 USDC. Live probe + registry mirror + incident history on a transaction counterparty.</li>
+<li><b>POST /x402/fitness/lite</b> — $1.25 USDC. Gas Efficiency Rank: per-function static gas estimates, A-E bands, calibrated mainnet cohort.</li>
+<li><b>POST /x402/fitness/full</b> — $2.25 USDC. Full report: exploitability scoring + source match against explorer-verified on-chain code.</li>
+</ul>
+<p>Every paid fitness response is an EIP-712 signed attestation by ERC-8004 agent #636, Merkle-anchored daily on Polygon. Factual output only (legal_weight: 0).</p>
 
 <h2>Other services</h2>
 <ul>
@@ -70,8 +83,10 @@ const HOMEPAGE = htmlPage(
 
 <h2>Free endpoints</h2>
 <ul>
-<li><b>POST /gateway/dry-run</b> — free Solidity security dry-run (9 breach scenarios, gas asymmetry ratio, ERC-4626 vault awareness).</li>
+<li><b>POST /gateway/dry-run</b> — free Solidity security dry-run (13 breach scenarios, gas asymmetry ratio, ERC-4626 vault awareness).</li>
 <li><b>GET /manifest.json</b> — A2A agent discovery manifest.</li>
+<li><b>GET /attestations</b> — free public audit API: full signed-attestation history (no auth, no payment).</li>
+<li><b>GET /attestations/proof?hash=0x...</b> — zero-trust proof package for any attestation (EIP-712 signature, Merkle proof, on-chain anchor TX).</li>
 <li><b>GET /samples</b> — free multi-tier sample manifests.</li>
 <li><b>GET /metrics</b> — live telemetry.</li>
 <li><b>GET /pricing.manifest.json</b> — machine-readable pricing.</li>
@@ -89,7 +104,7 @@ the built-in EIP-712 pull-payment rail (gateway contract
 
 const PRICING = htmlPage(
   "Nexus Gateway — Pricing",
-  "Pricing for Nexus Gateway services: scan-quick $0.05, scan-deep $0.50, structured data $0.20, code modules $1.20, legal-code $300/$450/$800 USDC on Polygon PoS via x402.",
+  "Pricing for Nexus Gateway services: scan-quick $0.05, scan-deep $0.50, fitness attestation $0.05, peer-check $0.05, gas-rank lite $1.25, fitness full $2.25, structured data $0.20, code modules $1.20, legal-code $300/$450/$800 USDC on Polygon PoS via x402.",
   `${HEADER}
 <main>
 <h2>Pricing (USDC on Polygon PoS, x402 exact)</h2>
@@ -97,6 +112,10 @@ const PRICING = htmlPage(
 <tr><th>Service</th><th>Endpoint</th><th>Price</th></tr>
 <tr><td>EVM Sentinel Quick-Check</td><td>POST /evm-sentinel/v1/scan-quick</td><td>$0.05 USDC</td></tr>
 <tr><td>EVM Sentinel Deep-Scan</td><td>POST /evm-sentinel/v1/scan-deep</td><td>$0.50 USDC</td></tr>
+<tr><td>Fitness Attestation (signed, verifiable)</td><td>POST /x402/fitness</td><td>$0.05 USDC</td></tr>
+<tr><td>Fitness Peer Check</td><td>POST /x402/fitness/peer-check</td><td>$0.05 USDC</td></tr>
+<tr><td>Fitness Lite — Gas Efficiency Rank</td><td>POST /x402/fitness/lite</td><td>$1.25 USDC</td></tr>
+<tr><td>Fitness Full Report</td><td>POST /x402/fitness/full</td><td>$2.25 USDC</td></tr>
 <tr><td>Structured data payload</td><td>POST /v1/structured-data</td><td>$0.20 USDC</td></tr>
 <tr><td>Code module (audited Solidity)</td><td>POST /v1/code-modules</td><td>$1.20 USDC</td></tr>
 <tr><td>Legal-code hybrid (light)</td><td>POST /v1/legal-code</td><td>$300 USDC</td></tr>
@@ -148,12 +167,16 @@ const LLMS_TXT = `# Nexus Gateway
 
 > EVM Sentinel + M2M legal-code gateway for Web3. High-speed static
 > security scans for AI agents (honeypot check, drainer detection,
-> 9+2 breach scenarios), a bilingual (English/Indonesian) legal contract
-> generator mapped to code functions, and structured data payloads.
-> Read-only static scan, no wallet approval required. Pay per call in
-> USDC on Polygon PoS via the x402 protocol (HTTP 402). No account, no
-> API key: identify with the x-client-id header, then pay when the
-> endpoint answers 402.
+> 13+2 breach scenarios), a bilingual (English/Indonesian) legal contract
+> generator mapped to code functions, structured data payloads, and
+> deterministic fitness attestation for code repositories, dependency
+> lockfiles, and packages. Every paid fitness response is an EIP-712
+> signed attestation by on-chain agent identity ERC-8004 #636,
+> Merkle-anchored daily on Polygon, and independently verifiable via
+> free public audit endpoints. Read-only static scan, no wallet approval
+> required. Pay per call in USDC on Polygon PoS via the x402 protocol
+> (HTTP 402). No account, no API key: identify with the x-client-id
+> header, then pay when the endpoint answers 402.
 
 Base URL: https://nexus-m2m-gateway.rakhmadaa.workers.dev
 Human site: https://rakhmadaa-gif.github.io/nexus-core-gateway/
@@ -167,11 +190,42 @@ Pricing manifest (JSON): https://nexus-m2m-gateway.rakhmadaa.workers.dev/pricing
   Output: { "risk_score": 0.0-1.0, "breach_scenarios": ["BS-001", ...],
   "gas_ratio": number, "action": "ALLOW" | "BLOCK" }.
 - POST /evm-sentinel/v1/scan-deep — Deep-Scan, $0.50 USDC. Full breach
-  analysis: 9 core scenarios (BS-001..BS-009) + Permit2-drain detection
-  (BS-010) + arbitrage-execution manipulation (BS-011), with per-scenario
-  detail, mitigations, and recommendations. Same input; richer output.
-  Results cached 1 hour — repeat scans of the same code return in ~50ms.
-  Read-only static scan, no wallet approval required.
+  analysis: 13 core scenarios (BS-001..BS-009 + BS-012..BS-015) +
+  Permit2-drain detection (BS-010) + arbitrage-execution manipulation
+  (BS-011), with per-scenario detail, mitigations, and recommendations.
+  Same input; richer output. Results cached 1 hour — repeat scans of the
+  same code return in ~50ms. Read-only static scan, no wallet approval
+  required.
+
+## Fitness attestation (paid, x402 exact, USDC on Polygon PoS eip155:137)
+
+Deterministic, fact-only fitness reports for code repositories,
+dependency lockfiles, packages, and smart contracts. Every paid response
+is an EIP-712 signed attestation by on-chain agent identity ERC-8004
+#636, Merkle-anchored daily on Polygon — independently verifiable via
+free public audit endpoints, never trust-based.
+
+- POST /x402/fitness — Fitness Attestation, $0.05 USDC. GHSA/CVE
+  vulnerability exposure via OSV, SPDX license detection, commit
+  freshness, CycloneDX 1.5 SBOM, deterministic 0-100 score with
+  per-advisory exposure windows. Input: {"repo":"owner/name"} and/or
+  {"packages":[{"name":"lodash","ecosystem":"npm","version":"4.17.20"}]},
+  or {"lockfile":{"filename":"package-lock.json","content":"..."}}
+  (package-lock / yarn.lock / requirements.txt / Pipfile.lock / go.mod /
+  Cargo.lock, up to 512 KiB, exact pinned versions).
+- POST /x402/fitness/peer-check — Peer Check, $0.05 USDC. Live probe,
+  registry mirror, and incident history for a transaction counterparty.
+  Input: {"peer_url":"https://..."}.
+- POST /x402/fitness/lite — Gas Efficiency Rank, $1.25 USDC. Static
+  per-function gas estimates, A-E bands, ranked against a calibrated
+  mainnet contract cohort. HTTP 422 with no charge if the code cannot
+  be ranked.
+- POST /x402/fitness/full — Full Report, $2.25 USDC. Adds 5-component
+  deterministic exploitability scoring and source match against
+  explorer-verified on-chain code.
+
+Factual output only: no security guarantees, no advisory opinions
+(legal_weight: 0).
 
 ## Other endpoints (paid, x402 exact, USDC on Polygon PoS eip155:137)
 
@@ -190,11 +244,16 @@ Pricing manifest (JSON): https://nexus-m2m-gateway.rakhmadaa.workers.dev/pricing
 
 ## Free endpoints (no payment, no x-client-id)
 
-- POST /gateway/dry-run — free Solidity security dry-run: 9 breach
-  scenarios (BS-001..BS-009), gas asymmetry ratio, ERC-4626 vault
-  awareness, nonce/replay defense. Use this to pre-check any contract
-  before deploying or before buying a paid scan.
+- POST /gateway/dry-run — free Solidity security dry-run: 13 breach
+  scenarios (BS-001..BS-009 + BS-012..BS-015), gas asymmetry ratio,
+  ERC-4626 vault awareness, nonce/replay defense. Use this to pre-check
+  any contract before deploying or before buying a paid scan.
 - GET /manifest.json — A2A agent discovery manifest.
+- GET /attestations — free public audit API: query and verify the
+  full signed-attestation history (no auth, no payment).
+- GET /attestations/proof?hash=0x... — zero-trust proof package for any
+  attestation: EIP-712 signature, Merkle proof, on-chain anchor TX, and
+  independent verification steps.
 - GET /samples — free multi-tier sample manifests (legal + code + matrix).
 - GET /metrics — live telemetry (uptime, latency, concurrency).
 - GET /pricing.manifest.json — machine-readable pricing.
@@ -211,8 +270,9 @@ contract 0x2a3D917379Bf94D7B6f239D6BcbBdD7cD8543683 on Polygon PoS
 pulls USDC via EIP-712 permit.
 
 Prices: scan-quick $0.05 USDC, scan-deep $0.50 USDC,
-structured_data $0.20 USDC, code_modules $1.20 USDC,
-legal_code $300/$450/$800 USDC by tier.
+fitness $0.05 USDC, peer-check $0.05 USDC, fitness-lite $1.25 USDC,
+fitness-full $2.25 USDC, structured_data $0.20 USDC,
+code_modules $1.20 USDC, legal_code $300/$450/$800 USDC by tier.
 
 ## Response envelope
 
