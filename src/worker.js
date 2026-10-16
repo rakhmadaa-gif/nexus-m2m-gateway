@@ -55,7 +55,7 @@ via the x402 protocol (HTTP 402).</p>
 
 const HOMEPAGE = htmlPage(
   "Nexus Gateway — EVM Sentinel & M2M Legal-Code Gateway",
-  "Solidity security scans (honeypot check, drainer detection, 13+2 breach scenarios), deterministic signed fitness attestation for repos, dependency lockfiles and packages (GHSA/CVE, SPDX license, SBOM, verifiable proof), bilingual EN/ID legal-code contracts, and structured data payloads for AI agents. x402 payments in USDC on Polygon PoS.",
+  "Solidity security scans (honeypot check, drainer detection, 13+2 breach scenarios), deterministic signed fitness attestation for repos, dependency lockfiles and packages (GHSA/CVE, SPDX license, CycloneDX SBOM, exploitability scoring, tamper-evident IPFS forensic evidence bundles, verifiable proof), bilingual EN/ID legal-code contracts, and structured data payloads for AI agents. x402 payments in USDC on Polygon PoS.",
   `${HEADER}
 <main>
 <h2>Security scans (EVM Sentinel)</h2>
@@ -71,6 +71,7 @@ const HOMEPAGE = htmlPage(
 <li><b>POST /x402/fitness/peer-check</b> — $0.05 USDC. Live probe + registry mirror + incident history on a transaction counterparty.</li>
 <li><b>POST /x402/fitness/lite</b> — $1.25 USDC. Gas Efficiency Rank: per-function static gas estimates, A-E bands, calibrated mainnet cohort.</li>
 <li><b>POST /x402/fitness/full</b> — $2.25 USDC. Full report: exploitability scoring + source match against explorer-verified on-chain code.</li>
+<li><b>POST /x402/fitness/forensic</b> — $3.50 USDC. Forensic report: top-3 detected exploit-scenario narratives ranked by severity, with a tamper-evident evidence bundle pinned to IPFS by two independent providers (the bundle CID sits inside the signed result hash).</li>
 </ul>
 <p>Every paid fitness response is an EIP-712 signed attestation by ERC-8004 agent #636, Merkle-anchored daily on Polygon. Factual output only (legal_weight: 0).</p>
 
@@ -116,6 +117,7 @@ const PRICING = htmlPage(
 <tr><td>Fitness Peer Check</td><td>POST /x402/fitness/peer-check</td><td>$0.05 USDC</td></tr>
 <tr><td>Fitness Lite — Gas Efficiency Rank</td><td>POST /x402/fitness/lite</td><td>$1.25 USDC</td></tr>
 <tr><td>Fitness Full Report</td><td>POST /x402/fitness/full</td><td>$2.25 USDC</td></tr>
+<tr><td>Fitness Forensic — exploit-scenario narratives + tamper-evident IPFS evidence bundle</td><td>POST /x402/fitness/forensic</td><td>$3.50 USDC</td></tr>
 <tr><td>Structured data payload</td><td>POST /v1/structured-data</td><td>$0.20 USDC</td></tr>
 <tr><td>Code module (audited Solidity)</td><td>POST /v1/code-modules</td><td>$1.20 USDC</td></tr>
 <tr><td>Legal-code hybrid (light)</td><td>POST /v1/legal-code</td><td>$300 USDC</td></tr>
@@ -223,6 +225,12 @@ free public audit endpoints, never trust-based.
 - POST /x402/fitness/full — Full Report, $2.25 USDC. Adds 5-component
   deterministic exploitability scoring and source match against
   explorer-verified on-chain code.
+- POST /x402/fitness/forensic — Forensic Report, $3.50 USDC. Top-3
+  detected exploit-scenario narratives for your Solidity code, ranked by
+  severity, with a tamper-evident evidence bundle pinned to IPFS by two
+  independent providers. The IPFS CID sits inside the signed result
+  hash — fetch the bundle from any public gateway, re-hash, and check
+  the proof at /attestations/proof.
 
 Factual output only: no security guarantees, no advisory opinions
 (legal_weight: 0).
@@ -271,7 +279,8 @@ pulls USDC via EIP-712 permit.
 
 Prices: scan-quick $0.05 USDC, scan-deep $0.50 USDC,
 fitness $0.05 USDC, peer-check $0.05 USDC, fitness-lite $1.25 USDC,
-fitness-full $2.25 USDC, structured_data $0.20 USDC,
+fitness-full $2.25 USDC, fitness-forensic $3.50 USDC,
+structured_data $0.20 USDC,
 code_modules $1.20 USDC, legal_code $300/$450/$800 USDC by tier.
 
 ## Response envelope
@@ -410,8 +419,8 @@ const OPENAPI_JSON = JSON.stringify(
   "openapi": "3.1.0",
   "info": {
     "title": "Nexus Gateway",
-    "summary": "EVM Sentinel + M2M legal-code gateway: high-speed static Solidity security scans (honeypot check, drainer detection, 9+2 breach scenarios), bilingual EN/ID legal contract generation, and structured data payloads. Read-only static scan, no wallet approval required. Pay per call in USDC on Polygon PoS via x402 (HTTP 402). No API key; identify with the x-client-id header.",
-    "version": "5.0.0",
+    "summary": "EVM Sentinel + M2M legal-code gateway: high-speed static Solidity security scans (honeypot check, drainer detection, 13+2 breach scenarios), deterministic signed fitness attestation (GHSA/CVE, SPDX license, CycloneDX SBOM, exploitability scoring, gas efficiency rank, tamper-evident IPFS forensic evidence bundles), bilingual EN/ID legal contract generation, and structured data payloads. Every paid fitness response is an EIP-712 signed attestation by ERC-8004 agent #636, Merkle-anchored daily on Polygon, verifiable via free public audit endpoints. Read-only static scan, no wallet approval required. Pay per call in USDC on Polygon PoS via x402 (HTTP 402). No API key; identify with the x-client-id header. NOTE: this front-door spec lists the legacy paths only; the full endpoint catalog (20 endpoints incl. /x402/fitness*) is in the engine OpenAPI served via /v1/openapi.json proxy.",
+    "version": "5.17.0-frontier",
     "contact": {
       "name": "Nexus Gateway",
       "url": "https://rakhmadaa-gif.github.io/nexus-core-gateway/"
