@@ -51,7 +51,9 @@ via the x402 protocol (HTTP 402).</p>
 <a href="/llms.txt">Agent doc (llms.txt)</a> ·
 <a href="/openapi.json">OpenAPI 3.1</a> ·
 <a href="/pricing">Pricing</a> ·
-<a href="/terms">Terms</a></p></header><hr>`;
+<a href="/terms">Terms</a> ·
+<a href="https://x402-list.com/services/nexus-gateway">x402-list</a> ·
+<a href="https://x402-list.com/services/nexus-fitness-attestation">x402-list (Fitness)</a></p></header><hr>`;
 
 const HOMEPAGE = htmlPage(
   "Nexus Gateway — EVM Sentinel & M2M Legal-Code Gateway",
@@ -184,6 +186,8 @@ Base URL: https://nexus-m2m-gateway.rakhmadaa.workers.dev
 Human site: https://rakhmadaa-gif.github.io/nexus-core-gateway/
 OpenAPI 3.1: https://nexus-m2m-gateway.rakhmadaa.workers.dev/openapi.json
 Pricing manifest (JSON): https://nexus-m2m-gateway.rakhmadaa.workers.dev/pricing.manifest.json
+x402-list directory: https://x402-list.com/services/nexus-gateway (gateway)
+and https://x402-list.com/services/nexus-fitness-attestation (fitness suite)
 
 ## Security scans (paid, x402 exact, USDC on Polygon PoS eip155:137)
 
@@ -214,7 +218,8 @@ free public audit endpoints, never trust-based.
   {"packages":[{"name":"lodash","ecosystem":"npm","version":"4.17.20"}]},
   or {"lockfile":{"filename":"package-lock.json","content":"..."}}
   (package-lock / yarn.lock / requirements.txt / Pipfile.lock / go.mod /
-  Cargo.lock, up to 512 KiB, exact pinned versions).
+  Cargo.lock / composer.lock / pubspec.lock / Gemfile.lock, plus composer.json
+  manifests — 10 formats, up to 512 KiB, exact pinned versions).
 - POST /x402/fitness/peer-check — Peer Check, $0.05 USDC. Live probe,
   registry mirror, and incident history for a transaction counterparty.
   Input: {"peer_url":"https://..."}.
@@ -419,8 +424,8 @@ const OPENAPI_JSON = JSON.stringify(
   "openapi": "3.1.0",
   "info": {
     "title": "Nexus Gateway",
-    "summary": "EVM Sentinel + M2M legal-code gateway: high-speed static Solidity security scans (honeypot check, drainer detection, 13+2 breach scenarios), deterministic signed fitness attestation (GHSA/CVE, SPDX license, CycloneDX SBOM, exploitability scoring, gas efficiency rank, tamper-evident IPFS forensic evidence bundles), bilingual EN/ID legal contract generation, and structured data payloads. Every paid fitness response is an EIP-712 signed attestation by ERC-8004 agent #636, Merkle-anchored daily on Polygon, verifiable via free public audit endpoints. Read-only static scan, no wallet approval required. Pay per call in USDC on Polygon PoS via x402 (HTTP 402). No API key; identify with the x-client-id header. NOTE: this front-door spec lists the legacy paths only; the full endpoint catalog (20 endpoints incl. /x402/fitness*) is in the engine OpenAPI served via /v1/openapi.json proxy.",
-    "version": "5.17.0-frontier",
+    "summary": "EVM Sentinel + M2M legal-code gateway: high-speed static Solidity security scans (honeypot check, drainer detection, 13+2 breach scenarios), deterministic signed fitness attestation (GHSA/CVE, SPDX license, CycloneDX SBOM, exploitability scoring, gas efficiency rank, tamper-evident IPFS forensic evidence bundles), bilingual EN/ID legal contract generation, and structured data payloads. Every paid fitness response is an EIP-712 signed attestation by ERC-8004 agent #636, Merkle-anchored daily on Polygon, verifiable via free public audit endpoints. Read-only static scan, no wallet approval required. Pay per call in USDC on Polygon PoS via x402 (HTTP 402). No API key; identify with the x-client-id header. NOTE: this front-door spec lists the legacy paths only; the full endpoint catalog (22 endpoints incl. /x402/fitness*) is in /manifest.json, with a curated OpenAPI subset (12 paths) at /v1/openapi.json.",
+    "version": "5.18.1-frontier",
     "contact": {
       "name": "Nexus Gateway",
       "url": "https://rakhmadaa-gif.github.io/nexus-core-gateway/"
